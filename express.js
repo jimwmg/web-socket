@@ -11,3 +11,5 @@ app.use(function(request,response){
   response.end(data);
 })
 const server = http.createServer(app).listen(3000);
+console.log('server is running at localhost:3000');
+

@@ -7,31 +7,27 @@
   <title>Document</title>
 </head>
 <body>
-  <div> teswwwt</div>
+  <button onclick="sendMessage()"> sendMessageToServer</button>
+  <div>
+      <div>message from server:</div>
+      <div id="container"></div>
+  </div>
   <script>
   let sendCount = 0;
   let sendTimer = null;
+  let ws = null;
+  let con = document.getElementById('container');
   function createWS(){
     //注意这里，这里连接的是websocket服务器，端口是8000，而express启动的服务器是3000的端口，要区分两个服务器的区别；
-    const ws = new WebSocket(`ws://${location.hostname}:8000`);
+    ws = new WebSocket(`ws://${location.hostname}:8000`);
     
     ws.onopen = function(){
       console.log('@open');
       ws.send(`hello server${sendCount}`);
-      // sendTimer = setInterval(function(){
-      //   sendCount++;
-      //   ws.send(`hi Server${sendCount}`)
-      //   if(sendCount === 3){
-      //     ws.close()
-      //   }
-      // },1000)
     };
     ws.onmessage = function(e){
-      console.log('@message');
-      console.log(e.data);
-
-      // var routelist = e.message;
-      // setRoutesList(routelist)
+      console.log('@message',e.data);
+      con.innerHTML = e.data;
     };
     ws.onclose = function(){
       console.log('@close')
@@ -42,7 +38,9 @@
     }
   } 
   createWS(); 
-    
+  function sendMessage(){
+    ws.send(sendCount++)
+  }
   </script>
 </body>
 </html>
