@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div> teswwwt</div>
+  <script>
+  let sendCount = 0;
+  let sendTimer = null;
+  function createWS(){
+    //注意这里，这里连接的是websocket服务器，端口是8000，而express启动的服务器是3000的端口，要区分两个服务器的区别；
+    const ws = new WebSocket(`ws://${location.hostname}:8000`);
+    
+    ws.onopen = function(){
+      console.log('@open');
+      ws.send(`hello server${sendCount}`);
+      // sendTimer = setInterval(function(){
+      //   sendCount++;
+      //   ws.send(`hi Server${sendCount}`)
+      //   if(sendCount === 3){
+      //     ws.close()
+      //   }
+      // },1000)
+    };
+    ws.onmessage = function(e){
+      console.log('@message');
+      console.log(e.data);
+
+      // var routelist = e.message;
+      // setRoutesList(routelist)
+    };
+    ws.onclose = function(){
+      console.log('@close')
+      sendTimer && clearInterval(sendTimer);
+    };
+    ws.onerror = function(){
+      console.log('@error')
+    }
+  } 
+  createWS(); 
+    
+  </script>
+</body>
+</html>
