@@ -19,10 +19,11 @@
   let con = document.getElementById('container');
   function createWS(){
     //注意这里，这里连接的是websocket服务器，端口是8000，而express启动的服务器是3000的端口，要区分两个服务器的区别；
+    console.log('createWs')
     ws = new WebSocket(`ws://${location.hostname}:8000`);
     
     ws.onopen = function(){
-      console.log('@open');
+      console.log('@open');//这里每次 打开或者刷新 浏览器窗口的时候 都会执行这个，然后向ws服务器发送消息
       ws.send(`hello server${sendCount}`);
     };
     ws.onmessage = function(e){
